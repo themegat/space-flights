@@ -1,4 +1,3 @@
-const { Knex } = require("knex");
 const knex = require("../connect");
 const tablePlanets = "planet";
 const tableSpaceCenters = "space_center";
