@@ -1,4 +1,3 @@
-const planet = require("./data/planets");
 const Persistance = require("./persistance.js");
 const Queries = Persistance.Queries;
 const Mutations = Persistance.Mutations;
@@ -7,7 +6,6 @@ const crypto = require("crypto");
 const resolvers = {
   // QUERIES
   Query: {
-    // hello: () => "Hello world!",
     async planet(parent, args, context, info) {
       const data = await this.planets(parent, { limit: 100 });
       return data.find((item) => item.code === args.code);
@@ -165,8 +163,10 @@ const resolvers = {
       const seatCount = variables.seatCount;
       const email = variables.email;
 
-      await Mutations.bookFlight(seatCount, flight.code, email);
-      return [];
+      const result = await Mutations.bookFlight(seatCount, flight.code, email);
+
+      const booking = await resolvers.Query.booking(_, { id: result[0].id });
+      return booking;
     },
   },
 };

@@ -72,11 +72,14 @@ const Mutations = {
    * @returns {Booking}
    */
   bookFlight(seatCount, flightCode, email) {
-    return knex(tableBookings).insert({
-      seatCount,
-      email,
-      flightCode,
-    });
+    return knex(tableBookings).insert(
+      {
+        seatCount,
+        email,
+        flightCode,
+      },
+      "id"
+    );
   },
 };
 
