@@ -2,6 +2,7 @@ const Koa = require("koa");
 const { ApolloServer } = require("apollo-server-koa");
 const typeDefs = require("./schema");
 const resolvers = require("./resolvers");
+const keys = require("./keys");
 
 const Port = 3000;
 
@@ -9,6 +10,13 @@ async function startApolloServer() {
   const server = new ApolloServer({
     typeDefs,
     resolvers,
+    context: (context) => {
+      const req = context.ctx.request;
+      const token = req.header.authorization || "";
+
+      if (token !== `bearer-${keys.token}`)
+        throw new Error("Authorization failed");
+    },
   });
   await server.start();
 
