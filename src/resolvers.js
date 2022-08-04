@@ -17,7 +17,7 @@ const resolvers = {
         return {
           ...planet,
           spaceCenters: spaceCenters
-            .filter((item) => item.planet_code == planet.code)
+            .filter((item) => item.planetCode == planet.code)
             .splice(0, limit),
         };
       });
@@ -34,7 +34,7 @@ const resolvers = {
       data =
         args.code === undefined
           ? data
-          : data.filter((item) => item.planet_code === args.code);
+          : data.filter((item) => item.planetCode === args.code);
 
       const node = data
         .slice(offset)
@@ -42,7 +42,7 @@ const resolvers = {
         .map((item) => {
           return {
             ...item,
-            planet: planets.find((planet) => planet.code === item.planet_code),
+            planet: planets.find((planet) => planet.code === item.planetCode),
           };
         });
 
@@ -61,7 +61,7 @@ const resolvers = {
           return {
             ...center,
             planet: planets.find(
-              (planet) => planet.code === center.planet_code
+              (planet) => planet.code === center.planetCode
             ),
           };
         })

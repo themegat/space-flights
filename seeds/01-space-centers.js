@@ -1,6 +1,6 @@
 const spaceCenters = require("../src/data/space-centers");
 
-const tableName = "space-center";
+const tableName = "space_center";
 
 /**
  * @param { import("knex").Knex } knex

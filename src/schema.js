@@ -21,7 +21,7 @@ const typeDefs = gql`
     description: String
     latitude: String
     longitude: String
-    planet_code: String
+    planetCode: String
     planet: Planet
   }
 

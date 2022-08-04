@@ -1,4 +1,4 @@
-const tableName = "space_center";
+const tableName = "booking";
 
 /**
  * @param { import("knex").Knex } knex
@@ -7,12 +7,9 @@ const tableName = "space_center";
 exports.up = async function (knex) {
   await knex.schema.createTable(tableName, (table) => {
     table.increments("id");
-    table.string("name");
-    table.string("uid");
-    table.text("description");
-    table.string("latitude");
-    table.string("longitude");
-    table.string("planetCode");
+    table.integer("seatCount");
+    table.string("email");
+    table.string("flightCode");
   });
 };
 
@@ -21,5 +18,5 @@ exports.up = async function (knex) {
  * @returns { Promise<void> }
  */
 exports.down = async function (knex) {
-  await knex.schema.dropTable(knex);
+  await knex.schema.dropTable(tableName);
 };
