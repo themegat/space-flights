@@ -55,7 +55,16 @@ const typeDefs = gql`
     spaceCenter(id: Int, uid: String): SpaceCenter
     spaceCenters(page: Int!, pageSize: Int!, code: String): [SpaceCenter]
     flight(id: Int!): Flight
-    flights(from: Int, to: Int, seatCount: Int, departureDay: String, page: Int, pageSize: Int): [Flight]
+    flights(
+      from: Int
+      to: Int
+      seatCount: Int
+      departureDay: String
+      page: Int
+      pageSize: Int
+    ): [Flight]
+    booking(id: Int!): Booking
+    bookings(email: String, page: Int, pageSize: Int): [Booking]
   }
 
   type Mutation {
@@ -70,8 +79,3 @@ const typeDefs = gql`
 `;
 
 module.exports = typeDefs;
-
-/*
-   hello: String
-    planet(code: String!): Planet
-*/

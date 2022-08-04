@@ -110,6 +110,26 @@ const resolvers = {
         .slice(offset)
         .slice(0, pageSize);
     },
+
+    async booking(parent, args, context, info) {
+      const id = args.id;
+
+      const bookings = await getBookings();
+      return bookings.find((booking) => booking.id === id);
+    },
+
+    async bookings(parent, args, context, info) {
+      const pageSize = args.pageSize || 10;
+      const page = args.page || 1;
+      const offset = (page - 1) * pageSize;
+      const email = args.email || "";
+
+      const bookings = await getBookings();
+      return bookings
+        .filter((booking) => booking.email.includes(email))
+        .slice(offset)
+        .slice(0, pageSize);
+    },
   },
 
   //MUTATIONS
@@ -150,6 +170,18 @@ const resolvers = {
     },
   },
 };
+
+async function getBookings() {
+  const flights = await getFlights();
+
+  const bookings = await Queries.getBookings();
+  return bookings.map((booking) => {
+    return {
+      ...booking,
+      flight: flights.find((item) => item.code === booking.flightCode),
+    };
+  });
+}
 
 async function getFlights() {
   const flights = await Queries.getFlights();
