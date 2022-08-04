@@ -84,4 +84,3 @@ const Mutations = {
 };
 
 module.exports = { Queries, Mutations };
-// module.exports = Mutations;
