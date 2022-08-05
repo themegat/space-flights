@@ -8,6 +8,12 @@ const Port = 3000;
 
 async function startApolloServer() {
   const server = new ApolloServer({
+    cors: {
+      origin: "https://studio.apollographql.com",
+      credentials: true,
+    },
+    cache: "bounded",
+    introspection: true,
     typeDefs,
     resolvers,
     context: (context) => {
