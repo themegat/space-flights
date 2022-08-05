@@ -1,0 +1,27 @@
+# docker-compose.ci.yml
+
+version: "3.9"
+services:
+  postgres:
+    image: postgres
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    environment:
+      POSTGRES_USER: strapi
+      POSTGRES_PASSWORD: test
+    ports:
+      - '5432:5432'
+
+  nodejs:
+    image: space-flights
+    environment:
+      - NODE_ENV=production
+    command: "npm run start-prod"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports:
+      - '3000:3000'
