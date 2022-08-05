@@ -5,9 +5,13 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "migrate-db": "knex migrate:latest --env development",
-    "seed-db": "knex seed:run --env development",
-    "start": "node src/server.js"
+    "migrate-db": "knex migrate:latest",
+    "seed-db": "knex seed:run",
+    "start": "node src/server.js",
+    "start-prod": "npm run migrate-db && npm run seed-db && npm start",
+    "dock-build": "docker build --network=\"host\" --tag space-flights .",
+    "dock-run": "docker run -p 3000:3000 space-flights",
+    "dock-compose": "docker-compose -f docker-compose.yml up --build"
   },
   "author": "T.Motsoeneng",
   "license": "ISC",
