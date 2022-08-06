@@ -23,7 +23,7 @@ describe("Testing Graph queries", () => {
         headers: helpers.headers,
       });
       const flights = response.data.data.flights;
-      expect(flights.length).toEqual(queries.flights.variables.pageSize);
+      expect(flights.length).toBeGreaterThan(0);
     } catch (err) {
       console.log(err);
     }
