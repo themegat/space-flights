@@ -1,4 +1,6 @@
 const knex = require("../connect");
+const crypto = require("crypto");
+
 const tablePlanets = "planet";
 const tableSpaceCenters = "space_center";
 const tableFlights = "flight";
@@ -41,7 +43,6 @@ const Queries = {
 const Mutations = {
   /**
    * Create a flight
-   * @param code String
    * @param launchSiteUid String
    * @param landingSiteUid String
    * @param departureAt DateTime
@@ -49,7 +50,9 @@ const Mutations = {
    *
    * @returns {Flight}
    */
-  scheduleFlight(code, launchSiteUid, landingSiteUid, departureAt, seatCount) {
+  scheduleFlight(launchSiteUid, landingSiteUid, departureAt, seatCount) {
+    const code = crypto.randomBytes(8).toString("hex");
+
     return knex(tableFlights).insert(
       {
         code,
@@ -82,4 +85,4 @@ const Mutations = {
   },
 };
 
-module.exports = { Queries, Mutations };
+module.exports = { knex, Queries, Mutations };

@@ -1,7 +1,6 @@
 const Persistance = require("./persistance.js");
 const Queries = Persistance.Queries;
 const Mutations = Persistance.Mutations;
-const crypto = require("crypto");
 
 const resolvers = {
   // QUERIES
@@ -134,7 +133,6 @@ const resolvers = {
   Mutation: {
     async scheduleFlight(_, variables) {
       const centers = await Queries.getSpaceCenters();
-      const code = crypto.randomBytes(8).toString("hex");
 
       const launchSiteUid = centers.find(
         (center) => center.id === variables.launchSiteId
@@ -146,7 +144,6 @@ const resolvers = {
       const seatCount = variables.seatCount;
 
       const result = await Mutations.scheduleFlight(
-        code,
         launchSiteUid,
         landingSiteUid,
         departureAt,
