@@ -61,7 +61,14 @@ const Mutations = {
         departureAt,
         seatCount,
       },
-      "id"
+      [
+        "id",
+        "code",
+        "launchSiteUid",
+        "landingSiteUid",
+        "departureAt",
+        "seatCount",
+      ]
     );
   },
 
@@ -80,7 +87,7 @@ const Mutations = {
         email,
         flightCode,
       },
-      "id"
+      ["id", "seatCount", "email", "flightCode"]
     );
   },
 };
