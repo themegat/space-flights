@@ -95,17 +95,21 @@ const resolvers = {
       landingSiteUid = landingSiteUid === undefined ? "" : landingSiteUid.uid;
 
       const flights = await getFlights();
-      return flights
-        .filter(
-          (flight) =>
-            flight.launchSiteUid === launchSiteUid ||
-            flight.landingSiteUid === landingSiteUid ||
-            flight.seatCount === seatCount ||
-            (new Date(flight.departureAt) >= departureDay &&
-              new Date(flight.departureAt) <= departureDay)
-        )
-        .slice(offset)
-        .slice(0, pageSize);
+      let result = flights.filter(
+        (flight) =>
+          flight.launchSiteUid === launchSiteUid ||
+          flight.landingSiteUid === landingSiteUid ||
+          flight.seatCount === seatCount ||
+          (new Date(flight.departureAt) >= departureDay &&
+            new Date(flight.departureAt) <= departureDay)
+      );
+
+      result =
+        result.length === 0
+          ? flights.filter((flight) => flight.id > 0)
+          : result;
+
+      return result.slice(offset).slice(0, pageSize);
     },
 
     async booking(parent, args, context, info) {
