@@ -8,7 +8,7 @@
     "migrate-db": "knex migrate:latest",
     "seed-db": "knex seed:run",
     "start": "node src/server.js",
-    "start-prod": "npm run migrate-db && npm run seed-db && npm start",
+    "start-prod": "npm run migrate-db && npm run seed-db && npm test && npm start",
     "dock-create-db": "docker run --name strapi_test -e POSTGRES_USER=strapi -e POSTGRES_PASSWORD=test -p 5432:5432 -d postgres",
     "dock-build": "docker build --network=\"host\" --tag space-flights .",
     "dock-run": "docker run -p 3000:3000 space-flights",
@@ -27,6 +27,8 @@
     "pg": "^8.7.3"
   },
   "devDependencies": {
-    "jest": "^28.1.3"
+    "axios": "^0.27.2",
+    "jest": "^28.1.3",
+    "jest-dev-server": "^6.1.1"
   }
 }

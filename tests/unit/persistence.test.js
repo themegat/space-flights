@@ -3,25 +3,20 @@ const helpers = require("../helpers");
 
 const data = require("../data/persistence");
 
-describe("Testing Queries", () => {
-  test("Test getPlanets to return a planet list", async () => {
+describe("Testing persistance queries", () => {
+  test("Test getPlanets should return a planet list", async () => {
     const result = await persistence.Queries.getPlanets();
     expect(result).toEqual(data.planets);
   });
 
-  test("Test getSpaceCenters to contain a space center", async () => {
+  test("Test getSpaceCenters should contain a space center", async () => {
     const result = await persistence.Queries.getSpaceCenters();
     expect(result).toContainEqual(data.launchSpaceCenter);
   });
-
-  test("Test getBookings to return an empty list", async () => {
-    const result = await persistence.Queries.getBookings();
-    expect(result).toEqual([]);
-  });
 });
 
-describe("Testing Mutations", () => {
-  test("Test scheduleFlight to insert a flight", async () => {
+describe("Testing persistance mutations", () => {
+  test("Test scheduleFlight should insert a flight", async () => {
     const from = data.launchSpaceCenter;
     const to = data.landingSpaceCenter;
     let departureDate = new Date();
