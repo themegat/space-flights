@@ -22,7 +22,7 @@ describe("Testing Graph queries", () => {
       const response = await axios.post(helpers.baseUrl, queries.flights, {
         headers: helpers.headers,
       });
-      const flights = response.data.data.flights;
+      const flights = response.data.data.flights.nodes;
       expect(flights.length).toBeGreaterThan(0);
     } catch (err) {
       console.log(err);

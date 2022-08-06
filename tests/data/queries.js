@@ -1,7 +1,7 @@
 const queries = {
   flights: {
     query:
-      "query Flights($page: Int, $pageSize: Int) {\n  flights(page: $page, pageSize: $pageSize) {\n    id\n    code\n    launchSite {\n      id\n    }\n    landingSite {\n      id\n    }\n  }\n}",
+      "query Flights($page: Int, $pageSize: Int, $departureDay: String) {\n  flights(page: $page, pageSize: $pageSize, departureDay: $departureDay) {\n    pagination {\n      total\n      page\n      pageSize\n    }\n    nodes {\n      code\n      availableSeats\n      launchSite {\n        name\n      }\n      landingSite {\n        name\n      }\n    }\n  }\n}\n",
     variables: {
       page: 1,
       pageSize: 10,

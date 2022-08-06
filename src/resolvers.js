@@ -38,7 +38,7 @@ const resolvers = {
           ? data
           : data.filter((item) => item.planetCode === args.code);
 
-      const node = data
+      const nodes = data
         .slice(offset)
         .slice(0, pageSize)
         .map((item) => {
@@ -48,7 +48,14 @@ const resolvers = {
           };
         });
 
-      return node;
+      return {
+        nodes,
+        pagination: {
+          total: nodes.length,
+          page,
+          pageSize,
+        },
+      };
     },
 
     async spaceCenter(parent, args, context, info) {
@@ -72,7 +79,8 @@ const resolvers = {
 
     async flight(parent, args, context, info) {
       const id = args.id;
-      const flights = await getFlights();
+      const bookings = await getBookings();
+      const flights = await getFlights(bookings);
       return flights.find((flight) => flight.id === id);
     },
 
@@ -94,7 +102,8 @@ const resolvers = {
       launchSiteUid = launchSiteUid === undefined ? "" : launchSiteUid.uid;
       landingSiteUid = landingSiteUid === undefined ? "" : landingSiteUid.uid;
 
-      const flights = await getFlights();
+      const bookings = await getBookings();
+      const flights = await getFlights(bookings);
       let result = flights.filter(
         (flight) =>
           flight.launchSiteUid === launchSiteUid ||
@@ -109,7 +118,16 @@ const resolvers = {
           ? flights.filter((flight) => flight.id > 0)
           : result;
 
-      return result.slice(offset).slice(0, pageSize);
+      const nodes = result.slice(offset).slice(0, pageSize);
+
+      return {
+        nodes,
+        pagination: {
+          total: nodes.length,
+          page,
+          pageSize,
+        },
+      };
     },
 
     async booking(parent, args, context, info) {
@@ -126,10 +144,19 @@ const resolvers = {
       const email = args.email || "";
 
       const bookings = await getBookings();
-      return bookings
+      const nodes = bookings
         .filter((booking) => booking.email.includes(email))
         .slice(offset)
         .slice(0, pageSize);
+
+      return {
+        nodes,
+        pagination: {
+          total: nodes.length,
+          page,
+          pageSize,
+        },
+      };
     },
   },
 
@@ -161,8 +188,18 @@ const resolvers = {
     async bookFlight(_, variables) {
       const flightId = variables.flightId;
       const flight = await resolvers.Query.flight(_, { id: flightId });
+      const bookings = await getBookings();
       const seatCount = variables.seatCount;
       const email = variables.email;
+
+      const availableSeats = getAvailableSeats(
+        bookings,
+        flight.code,
+        flight.seatCount
+      );
+      if (availableSeats < seatCount) {
+        throw new Error("Required seats are unavailable");
+      }
 
       const result = await Mutations.bookFlight(seatCount, flight.code, email);
 
@@ -173,7 +210,7 @@ const resolvers = {
 };
 
 async function getBookings() {
-  const flights = await getFlights();
+  const flights = await getFlights([]);
 
   const bookings = await Queries.getBookings();
   return bookings.map((booking) => {
@@ -184,10 +221,16 @@ async function getBookings() {
   });
 }
 
-async function getFlights() {
-  const flights = await Queries.getFlights();
+/**
+ * @param {Array} bookings
+ *
+ */
+
+async function getFlights(bookings) {
+  const flights = await Queries.getFlights(bookings);
   const spaceCenters = await Queries.getSpaceCenters();
   const planets = await Queries.getPlanets();
+  bookings = bookings === undefined ? [] : bookings;
 
   return flights.map((flight) => {
     flight.launchSite = spaceCenters
@@ -209,8 +252,33 @@ async function getFlights() {
       .find((item) => item.uid === flight.landingSiteUid);
 
     flight.departureAt = new Date(flight.departureAt).toDateString();
+    flight.availableSeats = getAvailableSeats(
+      bookings,
+      flight.code,
+      flight.seatCount
+    );
+
     return flight;
   });
+}
+
+/**
+ * Get available seat for a flight
+ *
+ * @param {Array} bookings
+ * @param {string} flightCode
+ * @param {number} flightSeats
+ *
+ * @returns {number} availableSeats
+ */
+
+function getAvailableSeats(bookings, flightCode, flightSeats) {
+  if (!bookings || bookings.length === 0) return flightSeats;
+  let result = bookings.reduce((value, booking) => {
+    if (booking.flightCode === flightCode) return value + booking.seatCount;
+  }, 0);
+  result = !result || result === NaN ? 0 : result;
+  return flightSeats - result;
 }
 
 module.exports = resolvers;

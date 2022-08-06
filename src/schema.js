@@ -45,15 +45,26 @@ const typeDefs = gql`
     flight: Flight
   }
 
-  type PgSpaceCenter {
+  type SpaceCenters {
     pagination: Pagination
+    nodes: [SpaceCenter]!
+  }
+
+  type Flights {
+    pagination: Pagination
+    nodes: [Flight]!
+  }
+
+  type Bookings {
+    pagination: Pagination
+    nodes: [Booking]!
   }
 
   type Query {
     planet(code: String!): Planet
     planets(limit: Int!): [Planet]
     spaceCenter(id: Int, uid: String): SpaceCenter
-    spaceCenters(page: Int!, pageSize: Int!, code: String): [SpaceCenter]
+    spaceCenters(page: Int!, pageSize: Int!, code: String): SpaceCenters
     flight(id: Int!): Flight
     flights(
       from: Int
@@ -62,9 +73,9 @@ const typeDefs = gql`
       departureDay: String
       page: Int
       pageSize: Int
-    ): [Flight]
+    ): Flights
     booking(id: Int!): Booking
-    bookings(email: String, page: Int, pageSize: Int): [Booking]
+    bookings(email: String, page: Int, pageSize: Int): Bookings
   }
 
   type Mutation {

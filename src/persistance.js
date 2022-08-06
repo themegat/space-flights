@@ -43,10 +43,10 @@ const Queries = {
 const Mutations = {
   /**
    * Create a flight
-   * @param launchSiteUid String
-   * @param landingSiteUid String
-   * @param departureAt DateTime
-   * @param seatCount Int
+   * @param {string} launchSiteUid
+   * @param {string} landingSiteUid
+   * @param {Date} departureAt
+   * @param {never} seatCount
    *
    * @returns {Flight}
    */
@@ -74,9 +74,9 @@ const Mutations = {
 
   /**
    * Create a flight booking
-   * @param seatCount Int
-   * @param email String
-   * @param flightCode String
+   * @param {number} seatCount
+   * @param {string} flightCode
+   * @param {string} email
    *
    * @returns {Booking}
    */
