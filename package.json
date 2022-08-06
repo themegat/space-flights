@@ -4,11 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "migrate-db": "knex migrate:latest",
     "seed-db": "knex seed:run",
     "start": "node src/server.js",
     "start-prod": "npm run migrate-db && npm run seed-db && npm start",
+    "dock-create-db": "docker run --name strapi_test -e POSTGRES_USER=strapi -e POSTGRES_PASSWORD=test -p 5432:5432 -d postgres",
     "dock-build": "docker build --network=\"host\" --tag space-flights .",
     "dock-run": "docker run -p 3000:3000 space-flights",
     "compose-dev": "docker-compose -f ./docker/docker-compose.dev.yml up --build",

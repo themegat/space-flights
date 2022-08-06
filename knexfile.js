@@ -6,6 +6,17 @@
  * @type { Object.<string, import("knex").Knex.Config> }
  */
 module.exports = {
+  test: {
+    client: "postgresql",
+    connection: {
+      host: "127.0.0.1",
+      port: 5432,
+      database: "strapi",
+      user: "strapi",
+      password: "test",
+    },
+    seeds: {},
+  },
   development: {
     client: "postgresql",
     connection: {
