@@ -1,9 +1,20 @@
-# space-flights
+<h1 align="center">
+space-flights
+</h>
+
+<h1 align="center">
+  <img src="https://eslbrains.com/wp-content/uploads/2018/02/the-future-of-spaceflight.png" width="300">
+</h1>
+
+# Description
+
+A simple NodeJs GraphQL service for booking space flights.
+> *Unit and integration test are included*
 
 # Sections
-This read me contain the following sections
+This read me contains the following sections
 
-* Developmet setup - *these are instructions for setting up the local environment and building the docker image. It also has optional instructions for coding and testing requirements*
+* Developmet setup - *instructions for setting up the local environment and building the docker image. It also has optional instructions for coding and testing requirements*
 * Usage - *instructions on how to run/test the project as a docker image*
 
 # Developmet setup
@@ -42,13 +53,23 @@ npm run dock-build
 
 # Usage
 
-**If the building the docker image was a success and you want to run the project**
+**Want to run the project which will be available at http://localhost:3000/graphql**
 
-> Follow the instruction in the *Developmet setup* section to build the docker image
+> **Follow the instructions in the *Developmet setup* section to build the docker image**
 
-Run either of the follwing commands
-> **This command would requires a postgres db instance to be availabe and configure according to the knexfile.js**
+Run either of the follwing commands sets
+
+> **Set 1** -These commands compose the docker containers for the posgres db and the project. **(The prefered option to run the project)**
+```bash
+# run the project from a local image
+npm run compose-dev
+# run the project from an image hosted on DockerHub
+npm run compose-prod
+```
+
+**or**
+
+> **Set 2** - This command would requires a postgres db instance to be availabe and configured according to the *./knexfile.js*
 ```bash
 npm run dock-run
 ```
-
